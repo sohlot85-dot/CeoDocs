@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CEODocs Studio</title>
+<style>
+:root{--bg:#000;--card:#0e0e10;--card2:#151518;--line:#26231a;--gold:#c9a24b;--gold2:#e6c878;--tx:#f2efe8;--mut:#8d897d;--ok:#6fbf8b;--bad:#d46a6a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.45}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:600;margin:0}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(0,0,0,.92);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:#000;z-index:25}
+.burger{background:none;border:1px solid var(--line);color:var(--gold);border-radius:10px;width:42px;height:42px;font-size:20px}
+.brand{font-family:Georgia,serif;font-size:20px;letter-spacing:.5px}.brand b{color:var(--gold)}
+nav{position:fixed;top:0;left:0;bottom:0;width:260px;background:#070707;border-right:1px solid var(--line);padding:calc(18px + env(safe-area-inset-top,0px)) 12px 20px;transform:translateX(-100%);transition:.25s;z-index:40;overflow-y:auto}
+nav.open{transform:none}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:30;display:none}.scrim.show{display:block}
+nav .brand{padding:6px 10px 18px}
+nav button{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:none;border:0;color:var(--mut);padding:12px;border-radius:12px;font-size:15px}
+nav button.on{background:linear-gradient(90deg,rgba(201,162,75,.18),transparent);color:var(--gold2)}
+main{padding:18px 16px 60px;max-width:900px;margin:0 auto}
+h2{font-size:26px;margin-bottom:4px}.sub{color:var(--mut);margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+.stat .n{font-family:Georgia,serif;font-size:30px;color:var(--gold2)}.stat .l{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:1px}
+label{display:block;color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:1px;margin:12px 0 6px}
+input,select,textarea{width:100%;background:var(--card2);color:var(--tx);border:1px solid var(--line);border-radius:12px;padding:12px;font-size:16px;font-family:inherit}
+textarea{min-height:110px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
+.btn{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#000;border:0;border-radius:12px;padding:12px 18px;font-weight:700;font-size:15px}
+.btn.ghost{background:none;color:var(--gold2);border:1px solid var(--gold)}
+.btn.red{background:none;color:var(--bad);border:1px solid var(--bad)}
+.btn.sm{padding:8px 12px;font-size:13px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.proj{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;background:var(--card);width:100%;color:var(--tx);text-align:left;font-size:15px}
+.proj .t{font-family:Georgia,serif;font-size:17px}.proj .m{color:var(--mut);font-size:12px;margin-top:3px}
+.pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;border:1px solid var(--gold);color:var(--gold2);white-space:nowrap}
+.pill.Published{border-color:var(--ok);color:var(--ok)}.pill.Idea{border-color:var(--mut);color:var(--mut)}
+.bar{height:6px;background:#222;border-radius:9px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.ck{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.ck input{width:22px;height:22px;accent-color:#c9a24b;flex:none}
+.note{border:1px dashed var(--gold);border-radius:12px;padding:10px 12px;color:var(--gold2);font-size:13px;margin-bottom:14px;background:rgba(201,162,75,.06)}
+.sheet{position:fixed;inset:0;background:#000;z-index:60;overflow-y:auto;padding:calc(16px + env(safe-area-inset-top,0px)) 16px 60px;display:none}.sheet.show{display:block}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cal .h{color:var(--mut);font-size:11px;padding:4px 0}.cal .d{aspect-ratio:1;border-radius:10px;background:var(--card2);font-size:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.cal .d.has{border:1px solid var(--gold);color:var(--gold2)}.cal .d.today{background:rgba(201,162,75,.25)}.cal .d i{width:5px;height:5px;border-radius:9px;background:var(--gold)}
+.thumb{aspect-ratio:16/9;border-radius:14px;background:radial-gradient(circle at 75% 30%,#3a2e10,#000 65%);border:1px solid var(--gold);display:flex;align-items:flex-end;padding:16px;font-family:Georgia,serif;font-size:clamp(22px,7vw,42px);color:var(--gold2);font-weight:700;line-height:1.05;text-transform:uppercase}
+.cnt{font-size:12px;color:var(--mut);text-align:right}.cnt.bad{color:var(--bad)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--gold);color:#000;padding:10px 18px;border-radius:99px;font-weight:600;z-index:90;display:none}
+.sc{border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px;background:var(--card2)}
+@media(min-width:900px){nav{transform:none}.top{display:none}main{margin-left:280px;padding-top:30px}.scrim{display:none!important}}
+</style>
+</head>
+<body>
+<div class="top"><button class="burger" id="bg" aria-label="Menu">☰</button><div class="brand">CEO<b>Docs</b> Studio</div></div>
+<div class="scrim" id="scrim"></div>
+<nav id="nav"></nav>
+<main id="main"></main>
+<div class="sheet" id="sheet"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+var KEY="ceodocs_v1";
+var STATUS=["Idea","Researching","Scripting","Production","Editing","Scheduled","Published"];
+var CK=["Topic & angle approved","Research & sources gathered","Script written","Facts double-checked","Voiceover recorded","Footage & visuals collected","Edit finished","Thumbnail designed","Title, description & tags set","Uploaded & scheduled (manually in YouTube Studio)"];
+var NAV=[["overview","◆","Overview"],["new","＋","New Documentary"],["ideas","✦","Topic Ideas"],["script","✎","Script Generator"],["scenes","▤","Scene Planner"],["shorts","▶","Shorts Generator"],["thumb","▣","Thumbnail Planner"],["seo","⌕","SEO Studio"],["cal","▦","Publishing Calendar"],["settings","⚙","Settings"]];
+var S,view="overview",calM=new Date();calM.setDate(1);
+
+function dstr(off){var d=new Date();d.setDate(d.getDate()+off);return d.toISOString().slice(0,10)}
+function uid(){return "p"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function e(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function mk(o){var p={id:uid(),title:"",topic:"",type:"Long documentary",status:"Idea",date:"",desc:"",notes:"",ck:CK.map(function(){return false}),script:"",scenes:[],short:"",thumbText:"",thumbNotes:"",seoTitle:"",seoDesc:"",seoTags:""};for(var k in o)p[k]=o[k];return p}
+function seed(){return{
+projects:[
+mk({id:"s1",title:"Nokia: The Giant That Missed the Future",topic:"Nokia’s rise to global phone dominance and its collapse after the smartphone shift",status:"Scripting",date:dstr(9),desc:"How the world’s biggest phone maker lost its lead to the iPhone and Android, and what leaders can learn from it.",notes:"Cover Symbian, the 2010 leadership change, the 2011 ‘burning platform’ memo and the 2013 Microsoft sale. Verify all figures.",ck:[true,true,true,false,false,false,false,false,false,false],script:"HOOK: Nokia once sold more than one in three phones on Earth.\n\nACT 1: Dominance.\nACT 2: Warning signs.\nACT 3: The fall.\nLESSON: Strength can hide strategic blind spots.",seoTitle:"Nokia: How the World’s Biggest Phone Company Collapsed",seoTags:"nokia, business documentary, symbian, iphone, business case study",thumbText:"Nokia Fell",thumbNotes:"Old Nokia handset beside a cracked modern phone, dark background, gold headline."}),
+mk({id:"s2",title:"Toys R Us: Why the Toy King Went Bankrupt",topic:"Toys R Us, leveraged buyout debt, Amazon competition and the 2018 closures",status:"Researching",date:dstr(16),desc:"A look at the leveraged buyout, mounting debt and shifting retail habits behind the collapse of a childhood icon.",notes:"Need sources on the 2005 buyout and interest payments. Check the brand revival story.",ck:[true,false,false,false,false,false,false,false,false,false],thumbText:"Debt Killed Toys R Us",thumbNotes:"Empty store aisle, giant faded logo, warm gold highlight."}),
+mk({id:"s3",title:"Wirecard: The €1.9 Billion That Never Existed",topic:"Wirecard accounting fraud, the missing cash and the 2020 collapse",status:"Idea",date:dstr(30),desc:"The rise and fall of a German fintech darling and the fraud that fooled regulators and auditors.",notes:"Legal sensitivity: use ‘alleged’ where court cases are ongoing. Check latest trial updates before scripting.",thumbText:"€1.9B Vanished",thumbNotes:"Dark financial charts, a single empty bank vault, gold text."}),
+mk({id:"s4",title:"Nokia in 60 Seconds",topic:"Quick Short about Nokia’s fall",type:"Short",status:"Idea",date:dstr(4),desc:"60-second Short teaser for the Nokia documentary.",notes:"Hook in first 2 seconds. Link the full documentary.",short:"HOOK: This company owned the phone market, then lost it in 5 years.\nBEAT 1: Peak market share.\nBEAT 2: The smartphone shift.\nBEAT 3: The sale.\nCTA: Full story on CEODocs."})
+],
+ideas:["Blockbuster vs Netflix: the missed deal","Kodak: invented digital, ignored it","WeWork: the valuation that vanished","Theranos: the blood-test illusion","Enron: the biggest accounting scandal","BlackBerry: from keyboard king to footnote"],
+settings:{channel:"CEODocs",tagline:"Business stories, decoded.",hours:"18:00"},sel:"s1"}}
+function load(){try{var r=localStorage.getItem(KEY);if(r){S=JSON.parse(r);return}}catch(x){}S=seed()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(x){}}
+function P(id){return S.projects.filter(function(p){return p.id===id})[0]}
+function cur(){return P(S.sel)||S.projects[0]}
+function pct(p){var n=p.ck.filter(Boolean).length;return Math.round(n/CK.length*100)}
+function toast(m){var t=document.getElementById("toast");t.textContent=m;t.style.display="block";clearTimeout(toast.h);toast.h=setTimeout(function(){t.style.display="none"},1800)}
+function fd(s){if(!s)return"No date";var d=new Date(s+"T00:00:00");return d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})}
+function opts(arr,v){return arr.map(function(a){return'<option'+(a===v?" selected":"")+'>'+e(a)+'</option>'}).join("")}
+function projSel(){var c=cur();if(!c)return'<div class="card">No projects yet. Create one in New Documentary.</div>';return'<label>Project</label><select data-sel>'+S.projects.map(function(p){return'<option value="'+p.id+'"'+(p.id===c.id?" selected":"")+'>'+e(p.title||"Untitled")+'</option>'}).join("")+'</select>'}
+function fld(p,k,l,ta,ph){return'<label>'+l+'</label>'+(ta?'<textarea data-p="'+p.id+'" data-k="'+k+'" placeholder="'+e(ph||"")+'">'+e(p[k])+'</textarea>':'<input data-p="'+p.id+'" data-k="'+k+'" value="'+e(p[k])+'" placeholder="'+e(ph||"")+'">')}
+function projRow(p){return'<button class="proj" data-edit="'+p.id+'"><div><div class="t">'+e(p.title||"Untitled")+'</div><div class="m">'+e(p.type)+' · '+fd(p.date)+' · '+pct(p)+'% done</div><div class="bar"><i style="width:'+pct(p)+'%"></i></div></div><span class="pill '+p.status+'">'+p.status+'</span></button>'}
+var note='<div class="note">Prototype notice: this dashboard is a planning tool only. It does not use AI, render video, connect to YouTube or upload anything. Everything is saved only in this browser on this device.</div>';
+
+var V={
+overview:function(){
+var c={};STATUS.forEach(function(s){c[s]=S.projects.filter(function(p){return p.status===s}).length});
+var up=S.projects.filter(function(p){return p.date&&p.status!=="Published"}).sort(function(a,b){return a.date<b.date?-1:1})[0];
+return'<h2>Overview</h2><p class="sub">Welcome back to '+e(S.settings.channel)+'.</p>'+note+
+'<div class="grid"><div class="stat"><div class="n">'+S.projects.length+'</div><div class="l">Projects</div></div><div class="stat"><div class="n">'+(c.Published||0)+'</div><div class="l">Published</div></div><div class="stat"><div class="n">'+(c.Scheduled||0)+'</div><div class="l">Scheduled</div></div><div class="stat"><div class="n">'+(S.projects.length-(c.Published||0)-(c.Scheduled||0))+'</div><div class="l">In progress</div></div></div>'+
+(up?'<div class="card"><div class="l" style="color:var(--mut);font-size:12px;letter-spacing:1px">NEXT PLANNED RELEASE</div><h3 style="margin-top:6px">'+e(up.title)+'</h3><p class="sub" style="margin:4px 0 0">'+fd(up.date)+'</p></div>':'')+
+'<h3 style="margin:18px 0 10px">Status board</h3><div class="card">'+STATUS.map(function(s){return'<div class="row" style="justify-content:space-between;padding:6px 0"><span class="pill '+s+'">'+s+'</span><span>'+c[s]+'</span></div>'}).join("")+'</div>'+
+'<h3 style="margin:18px 0 10px">All projects</h3>'+(S.projects.map(projRow).join("")||'<div class="card">No projects yet.</div>')},
+"new":function(){return'<h2>New Documentary</h2><p class="sub">Add a project to your pipeline.</p><div class="card"><label>Title</label><input id="nt" placeholder="e.g. Enron: The Collapse"><label>Topic</label><textarea id="nc" placeholder="What is the story about?"></textarea><label>Format</label><select id="nf"><option>Long documentary</option><option>Short</option></select><label>Status</label><select id="ns">'+opts(STATUS,"Idea")+'</select><label>Planned publish date</label><input type="date" id="nd"><div style="height:16px"></div><button class="btn" data-act="create">Add project</button></div>'},
+ideas:function(){return'<h2>Topic Ideas</h2><p class="sub">Your own idea list. Tap an idea to turn it into a project.</p>'+note+'<div class="card"><label>Add an idea</label><input id="ni" placeholder="Company or story idea"><div style="height:12px"></div><button class="btn" data-act="addidea">Save idea</button></div>'+
+S.ideas.map(function(t,i){return'<div class="card row" style="justify-content:space-between"><span>'+e(t)+'</span><span class="row"><button class="btn sm" data-idea="'+i+'">Make project</button><button class="btn sm red" data-delidea="'+i+'">✕</button></span></div>'}).join("")},
+script:function(){var p=cur();if(!p)return V.none();return'<h2>Script Generator</h2><p class="sub">A structured script workspace. You write the script; the template only adds headings.</p>'+note+projSel()+'<div class="row" style="margin:14px 0"><button class="btn ghost sm" data-act="tmpl">Insert outline template</button></div>'+fld(p,"script","Script",true,"Write or paste your script here…").replace("<textarea",'<textarea style="min-height:360px"')+'<div class="cnt">'+(p.script.split(/\s+/).filter(Boolean).length)+' words · approx. '+Math.max(1,Math.round(p.script.split(/\s+/).filter(Boolean).length/150))+' min spoken</div>'},
+scenes:function(){var p=cur();if(!p)return V.none();return'<h2>Scene Planner</h2><p class="sub">Plan each scene: what is said, what is seen.</p>'+projSel()+'<div style="height:14px"></div>'+
+p.scenes.map(function(s,i){return'<div class="sc"><div class="row" style="justify-content:space-between"><b style="color:var(--gold2)">Scene '+(i+1)+'</b><button class="btn sm red" data-delsc="'+i+'">Remove</button></div><label>Title</label><input data-sc="'+i+'" data-sk="t" value="'+e(s.t)+'"><label>Visuals / B-roll</label><textarea style="min-height:70px" data-sc="'+i+'" data-sk="v">'+e(s.v)+'</textarea><label>Duration</label><input data-sc="'+i+'" data-sk="d" value="'+e(s.d)+'" placeholder="e.g. 0:45"></div>'}).join("")+
+(p.scenes.length?'':'<div class="card">No scenes yet.</div>')+'<button class="btn" data-act="addsc">Add scene</button> <button class="btn ghost" data-act="starter">Add starter structure</button>'},
+shorts:function(){var p=cur();if(!p)return V.none();return'<h2>Shorts Generator</h2><p class="sub">Plan a vertical Short (under 60 seconds).</p>'+note+projSel()+fld(p,"short","Short plan (hook, beats, call to action)",true,"HOOK:\nBEAT 1:\nBEAT 2:\nBEAT 3:\nCTA:").replace("<textarea",'<textarea style="min-height:260px"')+'<div style="height:12px"></div><button class="btn ghost sm" data-act="shortt">Insert Shorts template</button>'},
+thumb:function(){var p=cur();if(!p)return V.none();return'<h2>Thumbnail Planner</h2><p class="sub">Sketch the idea. Create the final image in your design app.</p>'+projSel()+'<div style="height:14px"></div><div class="thumb">'+e(p.thumbText||"Your headline")+'</div>'+fld(p,"thumbText","Thumbnail text (2–4 words works best)",false,"e.g. Nokia Fell")+fld(p,"thumbNotes","Visual concept notes",true,"Imagery, colours, expression, layout…")},
+seo:function(){var p=cur();if(!p)return V.none();var tl=(p.seoTitle||"").length,dl=(p.seoDesc||"").length;return'<h2>SEO Studio</h2><p class="sub">Write and check your title, description and tags.</p>'+projSel()+fld(p,"seoTitle","YouTube title",false,"Keep under 70 characters")+'<div class="cnt'+(tl>70?" bad":"")+'" id="c1">'+tl+' / 70</div>'+fld(p,"seoDesc","Description",true,"First 2 lines matter most…")+'<div class="cnt'+(dl>5000?" bad":"")+'" id="c2">'+dl+' / 5000</div>'+fld(p,"seoTags","Tags (comma separated)",false,"business documentary, company history")+'<div class="cnt" id="c3">'+(p.seoTags?p.seoTags.split(",").filter(function(x){return x.trim()}).length:0)+' tags</div>'},
+cal:function(){var y=calM.getFullYear(),m=calM.getMonth(),first=(new Date(y,m,1).getDay()+6)%7,days=new Date(y,m+1,0).getDate(),td=dstr(0);
+var h="";["M","T","W","T","F","S","S"].forEach(function(d){h+='<div class="h">'+d+'</div>'});for(var i=0;i<first;i++)h+="<div></div>";
+var items=[];for(var d=1;d<=days;d++){var ds=y+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");var ps=S.projects.filter(function(p){return p.date===ds});items=items.concat(ps);h+='<div class="d'+(ps.length?" has":"")+(ds===td?" today":"")+'">'+d+(ps.length?"<i></i>":"")+'</div>'}
+return'<h2>Publishing Calendar</h2><p class="sub">Your planned dates. Nothing here publishes automatically.</p><div class="card"><div class="row" style="justify-content:space-between;margin-bottom:12px"><button class="btn sm ghost" data-act="pm">‹</button><b style="font-family:Georgia,serif;font-size:18px">'+calM.toLocaleDateString("en-GB",{month:"long",year:"numeric"})+'</b><button class="btn sm ghost" data-act="nm">›</button></div><div class="cal">'+h+'</div></div><h3 style="margin:16px 0 10px">This month</h3>'+(items.sort(function(a,b){return a.date<b.date?-1:1}).map(projRow).join("")||'<div class="card">Nothing planned this month.</div>')},
+settings:function(){var s=S.settings;return'<h2>Settings</h2><p class="sub">Brand details and data tools.</p><div class="card"><label>Channel name</label><input data-set="channel" value="'+e(s.channel)+'"><label>Tagline</label><input data-set="tagline" value="'+e(s.tagline)+'"><label>Usual publish time</label><input type="time" data-set="hours" value="'+e(s.hours)+'"></div>'+
+'<div class="card"><h3>Backup</h3><p class="sub">Copy this text and keep it safe (e.g. in Notes). Paste it back later to restore.</p><textarea id="bk">'+e(JSON.stringify(S))+'</textarea><div class="row" style="margin-top:12px"><button class="btn sm" data-act="import">Restore from text</button></div></div>'+
+'<div class="card"><h3>Integrations</h3><p class="sub" style="margin:8px 0 0">YouTube connection, AI generation and video rendering are not available in this prototype. They would need a real backend and are not simulated here.</p></div>'+
+'<div class="card"><button class="btn red" data-act="reset">Reset to sample data</button></div>'},
+none:function(){return'<div class="card">Create a project first in “New Documentary”.</div>'}};
+
+function renderNav(){document.getElementById("nav").innerHTML='<div class="brand">CEO<b>Docs</b></div>'+NAV.map(function(n){return'<button data-nav="'+n[0]+'" class="'+(view===n[0]?"on":"")+'"><span style="width:20px;text-align:center">'+n[1]+'</span>'+n[2]+'</button>'}).join("")}
+function render(){renderNav();document.getElementById("main").innerHTML=V[view]();window.scrollTo(0,0)}
+function go(v){view=v;closeNav();render()}
+function closeNav(){document.getElementById("nav").classList.remove("open");document.getElementById("scrim").classList.remove("show")}
+function openEdit(id){var p=P(id);if(!p)return;var sh=document.getElementById("sheet");
+sh.innerHTML='<div class="row" style="justify-content:space-between;margin-bottom:10px"><h2>Edit project</h2><button class="btn sm ghost" data-act="close">Done</button></div>'+
+fld(p,"title","Title")+fld(p,"topic","Topic",true)+'<label>Format</label><select data-p="'+p.id+'" data-k="type">'+opts(["Long documentary","Short"],p.type)+'</select><label>Status</label><select data-p="'+p.id+'" data-k="status">'+opts(STATUS,p.status)+'</select><label>Planned publish date</label><input type="date" data-p="'+p.id+'" data-k="date" value="'+e(p.date)+'">'+fld(p,"desc","Description",true)+fld(p,"notes","Notes",true)+
+'<h3 style="margin:22px 0 4px">Production checklist <span class="pill" id="pc">'+pct(p)+'%</span></h3>'+CK.map(function(c,i){return'<label class="ck" style="text-transform:none;letter-spacing:0;font-size:15px;color:var(--tx);margin:0"><input type="checkbox" data-ckp="'+p.id+'" data-ck="'+i+'"'+(p.ck[i]?" checked":"")+'><span>'+c+'</span></label>'}).join("")+
+'<div style="height:22px"></div><button class="btn red" data-del="'+p.id+'">Delete project</button>';
+sh.classList.add("show");sh.scrollTop=0}
+function closeSheet(){document.getElementById("sheet").classList.remove("show");render()}
+
+document.addEventListener("click",function(ev){var t=ev.target.closest("button");if(!t)return;var d=t.dataset;
+if(t.id==="bg"){document.getElementById("nav").classList.add("open");document.getElementById("scrim").classList.add("show");return}
+if(d.nav)return go(d.nav);if(d.edit)return openEdit(d.edit);
+if(d.del){if(confirm("Delete this project?")){S.projects=S.projects.filter(function(p){return p.id!==d.del});S.sel=S.projects[0]?S.projects[0].id:null;save();closeSheet()}return}
+if(d.idea!==undefined){var p=mk({title:S.ideas[d.idea],topic:S.ideas[d.idea]});S.projects.unshift(p);S.sel=p.id;save();toast("Project created");openEdit(p.id);return}
+if(d.delidea!==undefined){S.ideas.splice(d.delidea,1);save();return render()}
+if(d.delsc!==undefined){cur().scenes.splice(d.delsc,1);save();return render()}
+var a=d.act;if(!a)return;var c=cur();
+if(a==="close")return closeSheet();
+if(a==="create"){var ti=document.getElementById("nt").value.trim();if(!ti){toast("Please enter a title");return}var np=mk({title:ti,topic:document.getElementById("nc").value,type:document.getElementById("nf").value,status:document.getElementById("ns").value,date:document.getElementById("nd").value});S.projects.unshift(np);S.sel=np.id;save();toast("Project added");view="overview";render();return}
+if(a==="addidea"){var v=document.getElementById("ni").value.trim();if(v){S.ideas.unshift(v);save();render()}return}
+if(a==="tmpl"&&c){var tp=c.topic||c.title;c.script=(c.script?c.script+"\n\n":"")+"WORKING TITLE: "+c.title+"\nTOPIC: "+tp+"\n\nHOOK (0:00–0:45)\n[Write your opening line]\n\nACT 1 – THE RISE\n[Write]\n\nACT 2 – THE WARNING SIGNS\n[Write]\n\nACT 3 – THE COLLAPSE\n[Write]\n\nLESSON FOR LEADERS\n[Write]\n\nOUTRO & CALL TO ACTION\n[Write]";save();return render()}
+if(a==="shortt"&&c){c.short=(c.short?c.short+"\n\n":"")+"HOOK (0–2 sec):\nBEAT 1:\nBEAT 2:\nBEAT 3:\nCTA:";save();return render()}
+if(a==="addsc"&&c){c.scenes.push({t:"",v:"",d:""});save();return render()}
+if(a==="starter"&&c){["Cold open","Company origins","Peak success","Turning point","Collapse","Lessons"].forEach(function(n){c.scenes.push({t:n,v:"",d:""})});save();return render()}
+if(a==="pm"){calM.setMonth(calM.getMonth()-1);return render()}
+if(a==="nm"){calM.setMonth(calM.getMonth()+1);return render()}
+if(a==="import"){try{var o=JSON.parse(document.getElementById("bk").value);if(!o.projects)throw 0;S=o;save();toast("Restored");render()}catch(x){toast("That text is not a valid backup")}return}
+if(a==="reset"){if(confirm("Replace all data with the sample projects?")){S=seed();save();render()}}
+});
+document.getElementById("scrim").addEventListener("click",closeNav);
+
+function onEdit(ev){var t=ev.target,d=t.dataset;
+if(d.p){var p=P(d.p);if(!p)return;p[d.k]=t.value;save();
+if(d.k==="seoTitle"){var x=document.getElementById("c1");if(x){x.textContent=t.value.length+" / 70";x.className="cnt"+(t.value.length>70?" bad":"")}}
+if(d.k==="seoDesc"){var y=document.getElementById("c2");if(y){y.textContent=t.value.length+" / 5000";y.className="cnt"+(t.value.length>5000?" bad":"")}}
+if(d.k==="seoTags"){var z=document.getElementById("c3");if(z)z.textContent=t.value.split(",").filter(function(q){return q.trim()}).length+" tags"}
+if(d.k==="thumbText"){var th=document.querySelector(".thumb");if(th)th.textContent=t.value||"Your headline"}
+return}
+if(d.sc!==undefined){cur().scenes[d.sc][d.sk]=t.value;save();return}
+if(d.set){S.settings[d.set]=t.value;save();return}
+if(d.ckp){var q=P(d.ckp);q.ck[d.ck]=t.checked;save();var pc=document.getElementById("pc");if(pc)pc.textContent=pct(q)+"%";return}}
+document.addEventListener("input",onEdit);
+document.addEventListener("change",function(ev){var t=ev.target;if(t.dataset.sel!==undefined){S.sel=t.value;save();render();return}onEdit(ev)});
+
+load();render();
+})();
+</script>
+</body>
+</html>
